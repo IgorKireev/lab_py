@@ -8,9 +8,7 @@ def get_table(template: str) -> dict:
     return hash
 
 def bmh(string: str, template: str, table: dict):
-    count = 0
-    i = 1
-    index = 0
+    count, index, i = 0, 0, 1
     while True:
         if count == len(template):
             print(len(template) - i + index + 1)
