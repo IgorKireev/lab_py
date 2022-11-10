@@ -7,10 +7,7 @@ def get_table(template: str) -> dict:
             hash[template[i]] = len(template) - (i + 1)
     return hash
 
-def main():
-    text = input("Введите строку: ")
-    template = input("Введите подстроку: ")
-    table = get_table(template)
+def bmh(string: str, template: str, table: dict):
     count = 0
     i = 1
     index = 0
@@ -20,15 +17,21 @@ def main():
             with open("file.txt", 'w') as file:
                 file.write(f'{len(template) - i + index + 1}')
             break
-        if text[len(template) - i + index] == template[len(template) - i]:
+        if string[len(template) - i + index] == template[len(template) - i]:
             count += 1
         else:
             i = 0
-            if not text[len(template) - 1 + index] in table:
+            if not string[len(template) - 1 + index] in table:
                 index += len(template)
             else:
-                index += table[text[len(template) - 1 + index]]
+                index += table[string[len(template) - 1 + index]]
         i += 1
+
+def main():
+    string = input("Введите строку: ")
+    template = input("Введите подстроку: ")
+    table = get_table(template)
+    bmh(string, template, table)
 
 if __name__ == '__main__':
     main()
