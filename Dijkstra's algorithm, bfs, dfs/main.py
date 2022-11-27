@@ -13,7 +13,6 @@ hash['8'] = ['9']
 hash['9'] = []
 def search(value:str, item:str):
     a = value
-    count = 0
     queue = deque()
     queue += hash[value]
     duplicates, elements = [], []
@@ -23,8 +22,7 @@ def search(value:str, item:str):
         value = queue.popleft()
         if not value in duplicates:
             if value == item:
-                return f'{search(node, a)}->{value}'
-                #return f'{a}->{item}'
+                return f'{search(node, a)}->{item}'
             else:
                 duplicates.append(value)
                 queue += hash[value]
