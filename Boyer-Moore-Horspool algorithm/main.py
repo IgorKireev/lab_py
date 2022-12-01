@@ -1,11 +1,11 @@
 def get_table(template: str) -> dict:
-    hash = dict()
+    table = dict()
     for i in range(len(template)):
         if template[i] == template[-1]:
-            hash[template[i]] = len(template)
+            table[template[i]] = len(template)
         else:
-            hash[template[i]] = len(template) - (i + 1)
-    return hash
+            table[template[i]] = len(template) - (i + 1)
+    return table
 
 def bmh(string: str, template: str, table: dict):
     count, index, i = 0, 0, 1
