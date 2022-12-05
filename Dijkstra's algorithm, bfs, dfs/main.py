@@ -1,7 +1,6 @@
 from collections import deque
-infinity = float("inf")
 node: str = 'a'
-graph = { 'a': ['b', 'd', 'e', 'c', 'z'],
+unweighted_graph = { 'a': ['b', 'd', 'e', 'c', 'z'],
           'b': ['d', 'e'],
           'd': ['e'],
           'e': ['d'],
@@ -11,51 +10,8 @@ graph = { 'a': ['b', 'd', 'e', 'c', 'z'],
           'z': ['w'],
           'w': ['l'],
           'l': [ ] }
-def bfs(value:str, hash: dict):
-    array = []
-    array.append(value)
-    queue = deque()
-    queue += hash[value]
-    duplicates = []
-    while queue:
-        value = queue.popleft()
-        if not value in duplicates:
-            duplicates.append(value)
-            array.append(value)
-            queue += hash[value]
-    return array
-def print_bfs(func):
-    array = func
-    for i in array:
-        if i == array[-1]:
-            print(f'{i}.')
-        else:
-            print(f'{i}->', end='')
-print_bfs(bfs(node, graph))
 
-visited = set()
-array = []
-def dfs(visited, graph, node):
-    if node not in visited:
-        visited.add(node)
-        array.append(node)
-        for neighbor in graph[node]:
-            dfs(visited, graph, neighbor)
-    return array
-
-def print_dfs(func):
-    array = func(visited, graph, node)
-    with open('file.txt', 'w') as file:
-        for i in array:
-            if i == array[-1]:
-                file.write(f'{i}.')
-                #print(f'{i}.')
-            else:
-                file.write(f'{i}->')
-                #print(f'{i}->', end='')
-print_dfs(dfs)
-
-graph_new = {
+weighted_graph = {
     'a': {
         'b':4,
         'c':3
@@ -80,14 +36,55 @@ parents = {
     'c':'a',
     'd':None
 }
+def bfs(value:str, graph: dict):
+    array = []
+    array.append(value)
+    queue = deque()
+    queue += graph[value]
+    duplicates = []
+    while queue:
+        value = queue.popleft()
+        if not value in duplicates:
+            duplicates.append(value)
+            array.append(value)
+            queue += graph[value]
+    return array
+def print_bfs(func):
+    array = func
+    for i in array:
+        if i == array[-1]:
+            print(f'{i}.')
+        else:
+            print(f'{i}->', end='')
+print_bfs(bfs(node, unweighted_graph))
+
+visited = set()
+array = []
+def dfs(visited, graph, node):
+    if node not in visited:
+        visited.add(node)
+        array.append(node)
+        for neighbor in graph[node]:
+            dfs(visited, graph, neighbor)
+    return array
+
+def print_dfs(func):
+    array = func(visited, unweighted_graph, node)
+    with open('file.txt', 'w') as file:
+        for i in array:
+            if i == array[-1]:
+                file.write(f'{i}.')
+            else:
+                file.write(f'{i}->')
+print_dfs(dfs)
 
 def dijkstra():
     head = 'a'
     def find_lowest_cost_node():
         lowest_cost = 100000
         lowest_cost_node = None
-        for node in graph_new[head]:
-            cost = graph_new[head][node]
+        for node in weighted_graph[head]:
+            cost = weighted_graph[head][node]
             if cost < lowest_cost and node not in processed:
                 lowest_cost = cost
                 lowest_cost_node = node
@@ -95,8 +92,8 @@ def dijkstra():
     processed = []
     node = find_lowest_cost_node()
     while node not in processed and node != None:
-        cost = graph_new[head][node]
-        neighbors = graph_new[node]
+        cost = weighted_graph[head][node]
+        neighbors = weighted_graph[node]
         for n in neighbors:
             new_cost = cost + neighbors[n]
             if costs[n] > new_cost:
