@@ -32,18 +32,19 @@ def cipher(alphabet: list, letter: str, step: int, solution: bool) -> int:
         if not letter != j:
             return (alphabet.index(j) + step) % len(alphabet) if solution else (alphabet.index(j) - step + len(alphabet)) % len(alphabet)
 
+def get_alphabet(letter: str) -> list|None:
+    if letter in alp:
+        return alp
+    elif letter in UPPalp:
+        return UPPalp
+    elif letter in en_alp:
+        return en_alp
+    elif letter in en_UPPalp:
+        return en_UPPalp
+    return None
+
 def add_later(word: list, letter: str, step: int, solution: bool, cipher) -> None:
-    def alphabet() -> list|None:
-        if letter in alp:
-            return alp
-        elif letter in UPPalp:
-            return UPPalp
-        elif letter in en_alp:
-            return en_alp
-        elif letter in en_UPPalp:
-            return en_UPPalp
-        return None
-    alphabet = alphabet()
+    alphabet = get_alphabet(letter)
     if alphabet is None:
         word.append(letter)
     else:
